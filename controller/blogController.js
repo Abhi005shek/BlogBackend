@@ -28,6 +28,32 @@ export const getBlogs = async (req, res) => {
   });
 };
 
+export const getBlogById = async (req, res) => {
+  const id = req.params?.id;
+  console.log(id)
+  try{
+
+    const blog = await Blog.findById(id);
+    
+    if (!blog) {
+      return res.status(404).json({
+        success: false,
+        message: "Blog not found",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      data: blog || [],
+    });
+  } catch(error){
+    res.status(500).json({
+      success: false,
+      message: "Error occured while getting Blog",
+      error: error,
+    });
+  }
+};
+
 export const updateBlog = async (req, res) => {
   try {
     const { title, description, content } = req.body;
